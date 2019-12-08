@@ -1,3 +1,4 @@
+# imports
 import json
 import re
 from functools import partial
@@ -7,18 +8,10 @@ import matplotlib.pyplot as plt
 import spacy
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 
-# Fonction Permettant d'arrondir les heures
-
-
-def hour_rounder(t):
-    # Rounds to nearest hour by adding a timedelta hour if minute >= 30
-    return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
-            + timedelta(hours=t.minute//30))
-
-# Ouvre et répare les messages de facebook provenant du fichier json
-
-
+# Ouvre et répare les messages de facebook provenant du fichier json fourni par Facebook
 fix_mojibake_escapes = partial(re.compile(rb'\\u00([\da-f]{2})').sub, lambda m: bytes.fromhex(m.group(1).decode()))
+
+# Open facebook messages in json format
 with open('message_1.json', 'rb') as binary_data:
     repaired = fix_mojibake_escapes(binary_data.read())
 data = json.loads(repaired.decode('utf8'))
@@ -48,9 +41,7 @@ for x in liste_message:
     # lemmatiser tous les mots pour pouvoir faire du clustering après.
     customize_stop_words = [
         "d’", "qu’", "d'", "qu'", "j'", "j’", "c'", "c’", "l'", "l’", "t'", "t’", "-ce", "n'", "n’", "lol", "pis", 'pi',
-        'ca', '\n',
-        'none', 'the', 'ouais', 'oui', 'to', 'for', 'y', 'jsuis', "cest", 'c', 'ben', '\'', 'jai', ' ', 'haha',
-        'hahaha', 'faire', 'l', "y'a", "s'", 'ds', '2', 'jpense', 'ya', 'set', '2', 'jvais', '\n\n', 'changed', '1',]
+        'ca']
     liste_tokens = []
     for w in customize_stop_words:
         nlp.vocab[w].is_stop = True
@@ -59,6 +50,7 @@ for x in liste_message:
             liste_tokens.append(token.text)
     word_freq = Counter(liste_tokens)
     common_words = word_freq.most_common(10)
+    # you can now print the 10 most common words in a conversation
     print('Pour ' + x, ',les mots plus communs sont : ' + str(common_words))
 
 messages_count = liste_message.values()
@@ -66,9 +58,14 @@ total_message_envoyes = []
 for sublist in messages_count:
     for item in sublist:
         total_message_envoyes.append(item)
+# You could also count how many messags have been sent on the conversation
 print('Le nombre total de messages envoyés sur la convo de la boys = ' + str(len(total_message_envoyes)) + '\n')
 
+
 # Statistiques
+# In this section we will check at some of the data in terms of basic statistics
+# Longest message per person, average of how many characters are sent per message
+# Total number of characters sent
 moyenne = {}
 somme = {}
 maximum = {}
@@ -83,12 +80,9 @@ for person in liste_message:
           '- total des caractères écrits : ' + str(somme[person]) + '\n',
           '- plus long message envoyé : ' + str(maximum[person]) + '\n')
 
-sender_freq = Counter(liste_sender)
-quantite_messages_envoyes = sender_freq.most_common(10)
-print('Ordre des boys en fonction du nombre de messages envoyés')
-for person in quantite_messages_envoyes:
-    print(person)
 
+# You can also check the reactions data
+# For example how many time one person reacted in total to others' messages
 liste_reactions = []
 for all_messages in messages:
     reactions = all_messages.get('reactions')
@@ -110,6 +104,9 @@ ordre_reactionneurs = reactionneur_freq.most_common(10)
 liste_plot_nom = []
 liste_plot_valeur = []
 print('\n', ordre_reactionneurs)
+
+
+# One can also put in a plot the results of this search on reactions
 for tuple_x in ordre_reactionneurs:
     prenom = tuple_x[0].split()
     liste_plot_nom.append(prenom[0])
@@ -124,6 +121,13 @@ plt.show()
 # -------------------------------------
 # Script pour les timestamps de chacun
 # ------------------------------------
+
+# Fonction Permettant d'arrondir les heures
+def hour_rounder(t):
+    # Rounds to nearest hour by adding a timedelta hour if minute >= 30
+    return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
+            + timedelta(hours=t.minute//30))
+
 
 list_ts = []
 for all_messages in messages:
