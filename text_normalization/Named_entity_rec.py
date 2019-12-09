@@ -3,21 +3,25 @@ import pandas as pd
 import re as regex
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV, RandomizedSearchCV
 from time import time
-import gensim
 import nltk
 import spacy
 import seaborn as sns
 
+
+# Load spacy
 nlp = spacy.load("en_core_web_sm", disable=['parser', 'vectors', 'textcat'])
 
+# three parameters of the functions
 in_f = 'normalize.out'
 out_f = 'ner.out'
 size = 10000
 
-
+# read a dataframe in chunk
+# Helps to stream the data and preserve memory
+# With this we are going features from messages : 
+# The count of how many "PERSON" tags are being spoken per message
+# This will become features for a age classifier training
 def preprocess_text(in_f, out_f, size):
     write_header = True
     reader = pd.read_table(in_f, names=['blog', 'classe'], chunksize=size, delimiter=',')
