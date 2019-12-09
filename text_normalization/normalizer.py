@@ -54,21 +54,12 @@ def normalize_corpus(path):
     classe = 'class'
 
     # init the spacy pipeline
-    # !!! desactivate components if you only need tokenization
-    # (as a default, you get pos tagging, parsing, etc.) !!!
     nlp = spacy.load("en_core_web_sm", disable=['parser', 'vectors', 'ner', 'tagger', 'textcat'])
-    #nlp = spacy.load("en_core_web_sm")disable=['parser', 'ner']
 
-    # reading a csv file (from stdin) with panda is easy
-    # question: why from stdin ?
-    # memory load: initial csv x 2 (roughly)
-    # but possible to stream with the chunksize parameter (read the doc)
-    #df = pd.read_csv(sys.stdin, names=[blog,classe])
     df = pd.read_csv(path, names=[blog,classe])
     print(df.shape)
 
     # normalisation ligne par ligne de l'échantillon en utilisant la fonction normalizer()
-
     for index, row in df.iterrows():
         print(index)
         sent = pre_normalizer(row[blog])
