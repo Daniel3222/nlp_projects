@@ -1,3 +1,3 @@
 # Normalization
 
-###### Few lines of code that can help normalize text before processing it
+##### Few lines of code that can help normalize text before processing it
