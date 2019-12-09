@@ -1,25 +1,7 @@
-# Pipeline of bag-of-word model to do sentiment classification
+# Pipeline of bag-of-word model to do sentiment classification on reviews
 
 ## Pre-Processing
-###### 1. Tokenization
-###### 2. 
-###### 3.
-###### 4.
-
-## Simple unigram 
-###### 1.
-###### 2.
-###### 3.
-###### 4.
-
+## Simple unigram
 ## Bigram
-###### 1.
-###### 2.
-###### 3.
-###### 4.
+## Combined Bigram and Unigram
 
-# Combined Bigram and Unigram
-###### 1.
-###### 2.
-###### 3.
-###### 4.
