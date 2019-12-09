@@ -3,7 +3,7 @@
 ## The script is divided in 4 sections
 
 #### Pre-Processing
-#### Simple unigram
-#### Bigram
-#### Combined Bigram and Unigram
+#### Simple unigram, then classification with Naive Bayes
+#### Bigram, then classification with Naive Bayes
+#### Combined Bigram and Unigram, then classification with Naive Bayes
 
