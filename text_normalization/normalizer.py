@@ -48,6 +48,10 @@ def normalizer(string):
 
     return string_mod
 
+# Blog and Classe are the two columns of the dataframe used for that script
+# The Blog column contains strings, while the Classe column contains an age class of the user who wrote
+# the blogs
+
 def normalize_corpus(path):
     # globals
     blog = 'blog'
