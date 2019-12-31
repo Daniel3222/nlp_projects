@@ -58,6 +58,7 @@ def normalize_corpus(path):
     classe = 'class'
 
     # init the spacy pipeline
+    # we disabled some of the modules because "nlp" function works faster without these modules
     nlp = spacy.load("en_core_web_sm", disable=['parser', 'vectors', 'ner', 'tagger', 'textcat'])
 
     df = pd.read_csv(path, names=[blog,classe])
@@ -67,7 +68,7 @@ def normalize_corpus(path):
     for index, row in df.iterrows():
         print(index)
         sent = pre_normalizer(row[blog])
-        sent = nlp(sent)
+        sent = nlp(sent) # used nlp() from spacy to tokenize the strings
         normalized_list = [(normalizer(tok.text)) for tok in sent]
         normalized_sent = ' '.join(normalized_list)
         df.iloc[index,0] = normalized_sent
