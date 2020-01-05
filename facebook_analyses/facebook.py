@@ -12,7 +12,7 @@ from nltk.tokenize.treebank import TreebankWordDetokenizer
 fix_mojibake_escapes = partial(re.compile(rb'\\u00([\da-f]{2})').sub, lambda m: bytes.fromhex(m.group(1).decode()))
 
 # Open facebook messages in json format
-with open('message_1.json', 'rb') as binary_data:
+with open('your_facebook_message_conversation', 'rb') as binary_data:
     repaired = fix_mojibake_escapes(binary_data.read())
 data = json.loads(repaired.decode('utf8'))
 # Parcourir le fichier jusqu'à la section message
@@ -30,15 +30,15 @@ for all_messages in messages:
     liste_sender.append(sender)
     liste_message[sender].append(message)
 
-
+# my group conversation was in french, hence the fr_core_news
 nlp = spacy.load('fr_core_news_md')
 for x in liste_message:
     texte_tokenise = liste_message[x]
     texte_detok = TreebankWordDetokenizer().detokenize(texte_tokenise)
     doc = nlp(texte_detok.lower())
 
-    # Faire une fonction d'expression régulière pour retirer les tokens à 2 strings, retirer les j devant les verbes,
-    # lemmatiser tous les mots pour pouvoir faire du clustering après.
+    # in french, not all the apostrophe letters were tokenized correctly, so we added some 
+    #  stopwords
     customize_stop_words = [
         "d’", "qu’", "d'", "qu'", "j'", "j’", "c'", "c’", "l'", "l’", "t'", "t’", "-ce", "n'", "n’", "lol", "pis", 'pi',
         'ca']
@@ -50,7 +50,7 @@ for x in liste_message:
             liste_tokens.append(token.text)
     word_freq = Counter(liste_tokens)
     common_words = word_freq.most_common(10)
-    # you can now print the 10 most common words in a conversation
+    # you can now print the 10 most common words in a conversation for a person (x in this case)
     print('Pour ' + x, ',les mots plus communs sont : ' + str(common_words))
 
 messages_count = liste_message.values()
@@ -59,7 +59,7 @@ for sublist in messages_count:
     for item in sublist:
         total_message_envoyes.append(item)
 # You could also count how many messags have been sent on the conversation
-print('Le nombre total de messages envoyés sur la convo de la boys = ' + str(len(total_message_envoyes)) + '\n')
+print('Nombre de mots envoyés sur la conversation = ' + str(len(total_message_envoyes)) + '\n')
 
 
 # Statistiques
