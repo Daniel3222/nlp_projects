@@ -3,7 +3,7 @@
 This zipped folder which contains this README file is the result of the Kaggle Data Competetion that just ended in IFT6390. It contains the following :
 
  - README
- - naive_b_classif.py
+ - naive_bayes.py
  - train.csv
  - test.csv
  - english_stopwords.txt
